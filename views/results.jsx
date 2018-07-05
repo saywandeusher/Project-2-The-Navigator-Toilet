@@ -6,15 +6,22 @@ class Results extends React.Component {
 const center = {
       margin: '100px',
       textAlign: 'center',
-      backgroundColor: '#FFF'
       } ;
 
-      
+const fill = {
+      margin: '0',
+      height: '100%',
+}
+
+const tableWidth = {
+      margin: '0 auto',
+      width: '80%',
+} 
 
 
     return (
 
-      <html>
+      <html style={fill}>
         <head>
 
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"/>
@@ -22,18 +29,18 @@ const center = {
           <title >Toilets Found</title>
 
         </head>
-          <body>
+          <body style={fill}>
 
             <h1 style={center}>Toilets near you!</h1>
 
-            <table class="table">
+            <table class="table" style={tableWidth}>
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Time</th>
-                  <th scope="col">Ratings</th>
+                  <th scope="col" >#</th>
+                  <th scope="col" >Name</th>
+                  <th scope="col" >Location</th>
+                  <th scope="col" >Time</th>
+                  <th scope="col" >Ratings</th>
                 </tr>
               </thead>
               <tbody>
