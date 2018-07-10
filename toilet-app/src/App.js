@@ -26,6 +26,7 @@ constructor(props){
     super(props)
     this.state = {
       toilets: null,
+      Latitude: null,
     }
 }
 
@@ -54,6 +55,17 @@ function error(err) {
 
 navigator.geolocation.getCurrentPosition(success, error, options);
 }
+
+trafficControlBtn = () => {
+  while (this.state.Latitude === null){
+    if(this.state.Latitude === true){
+      return ( <button className="btn btn-success btn-lg" onClick={this.handleOnClick} style={btnCenter}>Find</button> )
+    } else {
+      return ( <button className="btn btn-danger btn-lg" onClick={this.handleOnClick} style={btnCenter}>Locating</button> )
+    }
+  }
+}
+
 
 renderToiletTable = () => {
   if (this.state.toilets === null) {
@@ -108,7 +120,7 @@ handleOnClick = () => {
 
       <div className="container" style={center}>
           <h1>Toilet どこ？</h1>
-          <button className="btn btn-danger btn-lg" onClick={this.handleOnClick} style={btnCenter}>Find</button>
+          {this.trafficControlBtn()}
           {this.renderToiletTable()}
       </div>
 

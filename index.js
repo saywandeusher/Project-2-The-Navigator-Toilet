@@ -77,10 +77,10 @@ app.engine('jsx', reactEngine);
 
 //Get nearby toilets here
 const getToilets = (request, response) => {
-  var currentLat = request.query.Latitude;
+  var currentLat =  1.30583400;
   currentLat = parseFloat(currentLat).toFixed(8);
   console.log(currentLat);
-  var currentLng = request.query.Longitude;
+  var currentLng = 103.83167100;
   currentLng = parseFloat(currentLng).toFixed(8);
   console.log(currentLng);
 
