@@ -30,11 +30,11 @@ jsonfile.readFile(FILE, (fileReadError, obj)=>{
 				console.log('Connected to database.');
 
 				let toilets = obj.toilets;
-				let text = 'INSERT INTO toilets (name, location, time, ratings) ' + ' VALUES($1, $2, $3, $4) RETURNING *';
+				let text = 'INSERT INTO toilets (name, location, time, ratings, lat, lng) ' + ' VALUES($1, $2, $3, $4, $5, $6) RETURNING *';
 				let values = null;
 
 				toilets.forEach((toilets) => {
-					values = [toilets.name, toilets.location, toilets.time, toilets.ratings];
+					values = [toilets.name, toilets.location, toilets.time, toilets.ratings, toilets.lat, toilets.lng];
 					
 					client.query(text, values, (dbQueryError, result) => {
 						if (dbQueryError) {

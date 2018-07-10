@@ -4,13 +4,17 @@
 			"name": "8 On Claymore Hill",
 			"location": "8 Claymore Hill, Singapore 229572",
 			"time": "8am - 11:30pm",
-			"rating" : 0
+			"rating" : 0,
+			"lat": 1.307716,
+			"lng": 103.832157
 		},
 		{
 			"name": "Shaw Theatres - Lido Cineplex",
 			"location": "350 Orchard Road, 5th/6th Floor, Shaw House, Singapore 238868",
 			"time": "8am - 11:30pm",
-			"rating" : 0			
+			"rating" : 0,
+			"lat": 1.305834,
+			"lng": 103.831671	
 		}
 	]
 }

@@ -1,7 +1,8 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const pg = require('pg');
-var geocoder = require('geocoder');
+
+
 
 // Initialise postgres client
 const config = {
@@ -22,7 +23,12 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-
+//allow axios to work
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
@@ -36,38 +42,60 @@ app.engine('jsx', reactEngine);
  * ===================================
  */
 
- const homePage = (request, response) => {
-  // query database for all toilets
+//  const homePage = (request, response) => {
+//   // query database for all toilets
 
-  const queryString = 'SELECT * from toilets;';
+//   const queryString = 'SELECT * from toilets;';
+
+//   pool.query(queryString, (err, result) => {
+//     if (err) {
+//       console.error('Query error:', err.stack);
+//     } else {
+
+//       // redirect to home page
+//       response.render('home');
+
+//     }
+//   });
+// }
+
+//  const getResults = (request, response) => {
+//   // query database for all toilets
+
+//   const queryString = 'SELECT * from toilets;';
+//   pool.query(queryString, (err, result) => {
+//     if (err) {
+//       console.error('Query error:', err.stack);
+//     } else {
+
+//       // redirect to results page
+//       response.render('results',{toilets: result.rows});
+
+//     }
+//   });
+// }
+
+//Get nearby toilets here
+const getToilets = (request, response) => {
+  var currentLat = request.query.Latitude;
+  currentLat = parseFloat(currentLat).toFixed(8);
+  console.log(currentLat);
+  var currentLng = request.query.Longitude;
+  currentLng = parseFloat(currentLng).toFixed(8);
+  console.log(currentLng);
+
+
+  const queryString = 'SELECT id, name, location, time, ratings from toilets ORDER BY SQRT(POWER('+ currentLat +' - lat, 2) + POWER('+ currentLng +' - lng, 2))';
+
   pool.query(queryString, (err, result) => {
     if (err) {
       console.error('Query error:', err.stack);
     } else {
-
-      // redirect to home page
-      response.render('home');
-
+      // send as JSON
+      response.json(result);
     }
   });
 }
-
- const getResults = (request, response) => {
-  // query database for all toilets
-
-  const queryString = 'SELECT * from toilets;';
-  pool.query(queryString, (err, result) => {
-    if (err) {
-      console.error('Query error:', err.stack);
-    } else {
-
-      // redirect to results page
-      response.render('results',{toilets: result.rows});
-
-    }
-  });
-}
-
 
 
 /**
@@ -76,8 +104,9 @@ app.engine('jsx', reactEngine);
  * ===================================
  */
 
-app.get('/', homePage);
-app.get('/results', getResults);
+// app.get('/', homePage);
+app.get('/toilets', getToilets);
+// app.get('/results', getResults);
 
 
 
@@ -87,7 +116,7 @@ app.get('/results', getResults);
  * ===================================
  */
 
-const server = app.listen(3000, () => console.log('~~~ Ahoy we go from the port of 3000!!!'));
+const server = app.listen(3001, () => console.log('~~~ Ahoy we go from the port of 3001!!!'));
 
 
 

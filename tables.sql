@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS toilets (
   name varchar(255),
   location varchar(255),
   time varchar(255),
-  ratings varchar(255)
+  ratings varchar(255),
+  lat Decimal(10, 8),
+  lng Decimal(11, 8)
 );
 
 -- -- create User table in database
