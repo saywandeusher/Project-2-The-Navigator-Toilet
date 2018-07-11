@@ -15,6 +15,30 @@
 			"rating" : 0,
 			"lat": 1.305834,
 			"lng": 103.831671	
+		},
+		{
+			"name": "My House",
+			"location": "Yishun avenue 4 blk 657, Singapore 760657",
+			"time": "24hrs",
+			"rating" : 0,
+			"lat": 1.422251,
+			"lng": 103.839332	
+		},
+		{
+			"name": "Yishun MRT",
+			"location": "301 Yishun Avenue 2 Singapore 769093",
+			"time": "5am - 12am",
+			"rating" : 0,
+			"lat": 1.429589,
+			"lng": 103.834932	
+		},
+		{
+			"name": "Ang mo kio MRT",
+			"location": "2450 Ang Mo Kio Ave 8, Singapore 569811",
+			"time": "5am - 12am",
+			"rating" : 0,
+			"lat": 1.369992,
+			"lng": 103.849636	
 		}
 	]
 }
