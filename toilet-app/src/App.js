@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 import axios from 'axios';
 
 const center = {
@@ -8,7 +10,8 @@ const center = {
 };
 
 const btnCenter = {
-  margin: '100px',
+  margin: '0 auto',
+  marginTop: '50px',
   width: '200px',
   height: '150px',
 };
@@ -18,17 +21,62 @@ const tableWidth = {
   width: '80%',
 };
 
+const floatTopRight = {
+  position: 'relative',
+  marginTop: '-180px',
+  float: 'right',
+};
 
+const floatTopLeft = {
+  position: 'relative',
+  marginTop: '-180px',
+  float: 'left',
+};
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
+Modal.setAppElement('#root')
 
 class App extends Component {
 
 constructor(props){
     super(props)
+
     this.state = {
       toilets: null,
       latitude: null,
-    }
+      modalIsOpen: false
+    };
+
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
 }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+    this.subtitle.style.textAlign = 'center';
+    this.forms.style.textAlign = 'center';
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
 
 componentDidMount(){
   var options = {
@@ -58,7 +106,7 @@ navigator.geolocation.getCurrentPosition(success, error, options);
 
 trafficControlBtn = () => {
     if(this.state.latitude != null) {
-      return ( <button className="btn btn-success btn-lg" onClick={this.handleOnClick} style={btnCenter}>Find</button> );
+      return ( <button className="btn btn-success btn-lg" onClick={this.handleOnClick} style={btnCenter}>Find Neaby Toilets</button> );
     } else {
       return ( <button className="btn btn-danger btn-lg" onClick={this.handleOnClick} style={btnCenter}>Locating</button> );
     }
@@ -73,7 +121,7 @@ renderToiletTable = () => {
   } else {
 
   const listItems = this.state.toilets.map((toilet,index) => 
-    <tr key={toilet.id}>
+    <tr key={toilet.id} >
       <td> {index + 1} </td>
       <td> {toilet.name}</td> 
       <td> {toilet.location}</td> 
@@ -82,7 +130,7 @@ renderToiletTable = () => {
     </tr>
   )
       return (
-                <table className="table" style={tableWidth}>
+                <table className="table" style={tableWidth} style={{marginTop:'100px'}}>
                   <thead className="thead-dark">
                     <tr>
                       <th scope="col" >#</th>
@@ -115,9 +163,29 @@ handleOnClick = () => {
   render() {
 
     return (
-
       <div className="container" style={center}>
-          <h1>Toilet どこ？</h1>
+      <a href="#" onClick= {this.openModal} style={floatTopLeft}>Register</a>
+      <a href="#" onClick= "#" style={floatTopRight}>Login</a>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOrepenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+
+          <h2 ref={subtitle => this.subtitle = subtitle}>Register</h2>
+
+          <div>When you register with us, you get to rate our toilets!</div>
+ 
+            <form action="/users/create" method="POST" ref={forms => this.forms = forms} >
+                <input name="email" type="email" placeholder="email" value={this.props.email} style={{margin:'10px'}} />
+                <br/>
+                <input name="password" type="password" placeholder="password" /><br/>
+                <input type="submit" value="Register" style={{margin:'10px'}} />
+            </form>
+        </Modal>
+          <h1>Toiletどこ</h1>
           {this.trafficControlBtn()}
           {this.renderToiletTable()}
       </div>
@@ -126,4 +194,5 @@ handleOnClick = () => {
   }
 }
 
+ReactDOM.render(<App />, root);
 export default App;
