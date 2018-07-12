@@ -55,7 +55,10 @@ constructor(props){
     this.state = {
       toilets: null,
       latitude: null,
-      modalIsOpen: false
+      modalIsOpen: false,
+      email: '',
+      password: '',
+      isLogin: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -104,6 +107,30 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
+
+createUser = (e) => {
+e.preventDefault();
+axios.post('http://localhost:3001/users/create', {
+  email: this.state.email,
+  password: this.state.password
+  })
+  .then((response) => {
+    this.setState({isLogin: true})
+    this.setState({modalIsOpen: false});
+  })
+  .catch(function (error) {
+    console.log(error);
+});
+}
+
+handleEmail = (e) => {
+  this.setState({email: e.target.value})
+}
+
+handlePassword = (e) => {
+  this.setState({password: e.target.value})
+}
+
 trafficControlBtn = () => {
     if(this.state.latitude != null) {
       return ( <button className="btn btn-success btn-lg" onClick={this.handleOnClick} style={btnCenter}>Find Neaby Toilets</button> );
@@ -126,7 +153,7 @@ renderToiletTable = () => {
       <td> {toilet.name}</td> 
       <td> {toilet.location}</td> 
       <td> {toilet.time}</td> 
-      <td> {toilet.ratings}</td>  
+      {/*<td> {toilet.ratings}</td>*/}
     </tr>
   )
       return (
@@ -137,7 +164,7 @@ renderToiletTable = () => {
                       <th scope="col" >Name</th>
                       <th scope="col" >Location</th>
                       <th scope="col" >Time</th>
-                      <th scope="col" >Ratings</th>
+                      {/*<th scope="col" >Ratings</th>*/}
                     </tr>
                   </thead>
                   <tbody>
@@ -162,13 +189,20 @@ handleOnClick = () => {
   
   render() {
 
+    let loginButton
+    if (this.state.isLogin) {
+      loginButton =  <a href="#" onClick= "#" style={floatTopRight}>Logout</a>
+    } else {
+      loginButton =  <a href="#" onClick= {this.openModal} style={floatTopRight}>Login</a>
+    }
+
     return (
       <div className="container" style={center}>
       <a href="#" onClick= {this.openModal} style={floatTopLeft}>Register</a>
-      <a href="#" onClick= "#" style={floatTopRight}>Login</a>
-        <Modal
+      {loginButton}        
+      <Modal
           isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOrepenModal}
+          onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
           contentLabel="Example Modal"
@@ -178,10 +212,10 @@ handleOnClick = () => {
 
           <div>When you register with us, you get to rate our toilets!</div>
  
-            <form action="/users/create" method="POST" ref={forms => this.forms = forms} >
-                <input name="email" type="email" placeholder="email" value={this.props.email} style={{margin:'10px'}} />
+            <form onSubmit={this.createUser} ref={forms => this.forms = forms} >
+                <input name="email" onChange={this.handleEmail} type="email" placeholder="email" value={this.props.email} style={{margin:'10px'}} />
                 <br/>
-                <input name="password" type="password" placeholder="password" /><br/>
+                <input name="password" onChange={this.handlePassword} type="password" placeholder="password" /><br/>
                 <input type="submit" value="Register" style={{margin:'10px'}} />
             </form>
         </Modal>
