@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS toilets (
   lng Decimal(11, 8)
 );
 
--- -- create User table in database
--- CREATE TABLE IF NOT EXISTS users (
---   id SERIAL PRIMARY KEY,
---   email varchar(255),
---   password varchar(255)
--- );
+-- create User table in database
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email varchar(255),
+  password varchar(255)
+);

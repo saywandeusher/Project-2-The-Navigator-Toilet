@@ -1,6 +1,8 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const pg = require('pg');
+const sha256 = require('js-sha256');
+const bodyParser = require('body-parser')
 
 
 
@@ -22,7 +24,9 @@ pool.on('error', function (err) {
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(methodOverride('_method'));
+app.use(bodyParser.json())
 //allow axios to work
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -30,50 +34,11 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Set react-views to be the default view engine
-const reactEngine = require('express-react-views').createEngine();
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jsx');
-app.engine('jsx', reactEngine);
-
 /**
  * ===================================
  * Route Handler Functions
  * ===================================
  */
-
-//  const homePage = (request, response) => {
-//   // query database for all toilets
-
-//   const queryString = 'SELECT * from toilets;';
-
-//   pool.query(queryString, (err, result) => {
-//     if (err) {
-//       console.error('Query error:', err.stack);
-//     } else {
-
-//       // redirect to home page
-//       response.render('home');
-
-//     }
-//   });
-// }
-
-//  const getResults = (request, response) => {
-//   // query database for all toilets
-
-//   const queryString = 'SELECT * from toilets;';
-//   pool.query(queryString, (err, result) => {
-//     if (err) {
-//       console.error('Query error:', err.stack);
-//     } else {
-
-//       // redirect to results page
-//       response.render('results',{toilets: result.rows});
-
-//     }
-//   });
-// }
 
 //Get nearby toilets here
 const getToilets = (request, response) => {
@@ -97,6 +62,32 @@ const getToilets = (request, response) => {
   });
 }
 
+const createUser = (request, response) => {
+  // const authenticate = 'SELECT email FROM Users WHERE email =' + [request.body.email]
+  // if (result.rows.length > 0) {
+  //   response.send('fuck u try again!')
+  // } else{}
+  console.log(request)
+  const queryString = 'INSERT INTO users(email, password) VALUES($1, $2) RETURNING *';
+  const values = [request.body.email, sha256(request.body.password)];
+
+  pool.query(queryString, values, (err, result) => {
+    if (err) {
+      console.log('query error:', err.stack);
+    } else {
+      console.log('query result:', result);
+
+      let user_id = result.rows[0].id;
+
+      response.sendStatus(200);
+
+      // response.cookie('logged_in', 'true');
+      // response.cookie('user_id', user_id);
+      // // redirect to home page
+      // response.redirect('http://localhost:3000/');
+    }
+  });
+};
 
 /**
  * ===================================
@@ -104,10 +95,8 @@ const getToilets = (request, response) => {
  * ===================================
  */
 
-// app.get('/', homePage);
 app.get('/toilets', getToilets);
-// app.get('/results', getResults);
-
+app.post('/users/create', createUser);
 
 
 /**

@@ -46,7 +46,7 @@ jsonfile.readFile(FILE, (fileReadError, obj)=>{
 							console.log("Entry added:", result.rows[0].id);
 
 						}
-						if (result.rows[0].id == 2) { client.end() };
+						if (result.rows[0].id == 6) { client.end() };
 					});
 				});
 			}

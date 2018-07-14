@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import axios from 'axios';
+// import LoginModal from './login.js'
 
 const center = {
   margin: '0 auto',
@@ -66,7 +67,7 @@ constructor(props){
     this.closeModal = this.closeModal.bind(this);
 }
 
-  openModal() {
+  openModal = () => {
     this.setState({modalIsOpen: true});
   }
 
@@ -193,7 +194,7 @@ handleOnClick = () => {
     if (this.state.isLogin) {
       loginButton =  <a href="#" onClick= "#" style={floatTopRight}>Logout</a>
     } else {
-      loginButton =  <a href="#" onClick= {this.openModal} style={floatTopRight}>Login</a>
+      loginButton =  <a href="#" onClick="#" style={floatTopRight}>Login</a>
     }
 
     return (

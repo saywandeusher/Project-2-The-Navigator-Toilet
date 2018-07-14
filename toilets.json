@@ -39,6 +39,14 @@
 			"rating" : 0,
 			"lat": 1.369992,
 			"lng": 103.849636	
+		},
+		{
+			"name": "Best toilet in Singapore",
+			"location": "123 clementi drain hole, Singapore 569811",
+			"time": "24 hours",
+			"rating" : 0,
+			"lat": 1.314645,
+			"lng": 103.764626	
 		}
 	]
 }
